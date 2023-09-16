@@ -10,7 +10,7 @@ USE dbGamarraMarket;
 /* Crear la tabla CLIENTE */
 CREATE TABLE CLIENTE
 (
-    id int,
+    id int auto_increment,
     tipo_documento char(3),
     numero_documento char(9),
     nombres varchar(60),
@@ -18,10 +18,9 @@ CREATE TABLE CLIENTE
     email varchar(80),
     celular char(9),
     fecha_nacimiento date,
-    activo bool,
+    activo bool default('1'),
     CONSTRAINT cliente_pk PRIMARY KEY (id)
 );
-
 /* Listar estructura de tabla CLIENTE */
 SHOW COLUMNS IN CLIENTE;
 
@@ -31,24 +30,25 @@ SHOW TABLES;
 /* Crear la tabla VENTA */
 CREATE TABLE VENTA
 (
-    id int,
+    id int auto_increment,
     fecha_hora timestamp,
-    activo bool,    
+    activo bool default('1'),    
     CONSTRAINT venta_pk PRIMARY KEY (id)
 );
 
 /* Crear la tabla VENTA_DETALLE */
 CREATE TABLE VENTA_DETALLE
 (
-    id int,
+    id int auto_increment,
     cantidad int,
+    activo bool,
     CONSTRAINT venta_detalle_pk PRIMARY KEY (id)
 );
 
 /* Crear la tabla VENDEDOR */
 CREATE TABLE VENDEDOR
 (
-    id int,
+    id int auto_increment,
     tipo_documento char(3),
     numero_documento char(15),
     nombres varchar(60),
@@ -56,20 +56,20 @@ CREATE TABLE VENDEDOR
     salario decimal(8,2),
     celular char(9),
     email varchar(80),
-    activo bool,
+    activo bool default('1'),
     CONSTRAINT vendedor_pk PRIMARY KEY (id)
 );
 
 /* Crear la tabla PRENDA */
 CREATE TABLE PRENDA
 (
-    id int,
+    id int auto_increment,
     descripcion varchar(90),
     marca varchar(60),
     cantidad int,
     talla varchar(10),
     precio decimal(8,2),
-    activo bool,
+    activo bool default('1'),
     CONSTRAINT prenda_pk PRIMARY KEY (id)
 );
 
@@ -143,12 +143,11 @@ ADD COLUMN prenda_id int;
 
 /* Crear relación VENTA_DETALLE_PRENDA */
 ALTER TABLE VENTA_DETALLE
-	ADD CONSTRAINT VENTA_DETALLE_PRENDA FOREIGN KEY (prenda_id)
-    REFERENCES VENTA_DETALLE (id)
+	ADD CONSTRAINT PRENDA_VENTA_DETALLE FOREIGN KEY (prenda_id)
+    REFERENCES PRENDA (id)
     ON UPDATE CASCADE
     ON DELETE CASCADE
 ;
-
 /* Listar relaciones de tablas de la base de datos activa */
 SELECT 
     i.constraint_name, k.table_name, k.column_name, 
